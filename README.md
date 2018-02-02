@@ -4,7 +4,7 @@
 Go client for [Binance](https://www.binance.com)
 
 ## Installation
-```go get github.com/pdepip/go-binance/binance```
+```go get github.com/yoshiso/go-binance/binance```
 
 ## Documentation
 Full API Documentation can be found at https://www.binance.com/restapipub.html
@@ -40,7 +40,7 @@ package main
 import (
     "os"
     "fmt"
-    "github.com/pdepip/go-binance/binance"
+    "github.com/yoshiso/go-binance/binance"
 )
 
 func main() {
@@ -66,7 +66,7 @@ package main
 import (
 	"os"
 	"fmt"
-	"github.com/pdepip/go-binance/binance"
+	"github.com/yoshiso/go-binance/binance"
 )
 
 func main() {
@@ -99,7 +99,7 @@ package main
 import (
 	"os"
 	"fmt"
-	"github.com/pdepip/go-binance/binance"
+	"github.com/yoshiso/go-binance/binance"
 )
 
 func main() {
@@ -128,7 +128,7 @@ func main() {
 import (
 	"os"
 	"fmt"
-	"github.com/pdepip/go-binance/binance"
+	"github.com/yoshiso/go-binance/binance"
 )
 
 func main() {
@@ -155,7 +155,7 @@ func main() {
 import (
 	"os"
 	"fmt"
-	"github.com/pdepip/go-binance/binance"
+	"github.com/yoshiso/go-binance/binance"
 )
 
 func main() {
@@ -183,7 +183,7 @@ func main() {
 import (
 	"os"
 	"fmt"
-	"github.com/pdepip/go-binance/binance"
+	"github.com/yoshiso/go-binance/binance"
 )
 
 func main() {
@@ -209,7 +209,7 @@ func main() {
 ```go
 import (
 	"fmt"
-	"github.com/pdepip/go-binance/binance"
+	"github.com/yoshiso/go-binance/binance"
 )
 
 func main() {
@@ -237,7 +237,7 @@ func main() {
 ```go
 import (
 	"fmt"
-	"github.com/pdepip/go-binance/binance"
+	"github.com/yoshiso/go-binance/binance"
 )
 
 func main() {

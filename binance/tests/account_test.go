@@ -3,7 +3,7 @@ package account_test
 import (
     "os"
     "testing"
-    "github.com/pdepip/go-binance/binance"
+    "github.com/yoshiso/go-binance/binance"
 )
 
 
