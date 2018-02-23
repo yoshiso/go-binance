@@ -9,7 +9,6 @@ package binance
 
 import (
 	"encoding/json"
-	"strconv"
 
 	"github.com/shopspring/decimal"
 )
@@ -96,19 +95,19 @@ type BookTicker struct {
 }
 
 // Result from: GET /api/v1/klines
-
 type Kline struct {
-	OpenTime         int64
-	Open             float64
-	High             float64
-	Low              float64
-	Close            float64
-	Volume           float64
-	CloseTime        int64
-	QuoteVolume      float64
-	NumTrades        int64
-	TakerBaseVolume  float64
-	TakerQuoteVolume float64
+	OpenTime         int64           `json:"t"`
+	CloseTime        int64           `json:"T"`
+	Open             decimal.Decimal `json:"o"`
+	High             decimal.Decimal `json:"h"`
+	Low              decimal.Decimal `json:"l"`
+	Close            decimal.Decimal `json:"c"`
+	Volume           decimal.Decimal `json:"v"`
+	Trades           int64           `json:"n"`
+	Closed           bool            `json:"x"`
+	QuoteVolume      decimal.Decimal `json:"q"`
+	TakerBaseVolume  decimal.Decimal `json:"V"`
+	TakerQuoteVolume decimal.Decimal `json:"Q"`
 }
 
 // Result from: GET /api/v3/exchangeInfo
@@ -148,59 +147,4 @@ type RateLimit struct {
 	Limit         int64  `json:"limit"`
 	Interval      string `json:"interval"`
 	RateLimitType string `json:"rateLimitType"`
-}
-
-// Custom Unmarshal function to handle response data format
-func (k *Kline) UnmarshalJSON(b []byte) error {
-	var s [11]interface{}
-
-	err := json.Unmarshal(b, &s)
-
-	k.OpenTime = int64(s[0].(float64))
-
-	k.Open, err = strconv.ParseFloat(s[1].(string), 64)
-	if err != nil {
-		return err
-	}
-
-	k.High, err = strconv.ParseFloat(s[2].(string), 64)
-	if err != nil {
-		return err
-	}
-
-	k.Low, err = strconv.ParseFloat(s[3].(string), 64)
-	if err != nil {
-		return err
-	}
-
-	k.Close, err = strconv.ParseFloat(s[4].(string), 64)
-	if err != nil {
-		return err
-	}
-
-	k.Volume, err = strconv.ParseFloat(s[5].(string), 64)
-	if err != nil {
-		return err
-	}
-
-	k.CloseTime = int64(s[6].(float64))
-
-	k.QuoteVolume, err = strconv.ParseFloat(s[7].(string), 64)
-	if err != nil {
-		return err
-	}
-
-	k.NumTrades = int64(s[8].(float64))
-
-	k.TakerBaseVolume, err = strconv.ParseFloat(s[9].(string), 64)
-	if err != nil {
-		return err
-	}
-
-	k.TakerQuoteVolume, err = strconv.ParseFloat(s[10].(string), 64)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
