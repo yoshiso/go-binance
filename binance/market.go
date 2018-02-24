@@ -18,8 +18,8 @@ func (b *Binance) GetOrderBook(q OrderBookQuery) (book OrderBook, err error) {
 		return
 	}
 
-	reqUrl := fmt.Sprintf("api/v1/depth?symbol=%s&limit=%d", q.Symbol, q.Limit)
-	_, err = b.client.do("GET", reqUrl, "", false, &book)
+	reqURL := fmt.Sprintf("api/v1/depth?symbol=%s&limit=%d", q.Symbol, q.Limit)
+	_, err = b.client.do("GET", reqURL, "", false, &book)
 
 	return
 }
@@ -32,38 +32,43 @@ func (b *Binance) GetAggTrades(q SymbolQuery) (trades []AggTrade, err error) {
 		return
 	}
 
-	reqUrl := fmt.Sprintf("api/v1/aggTrades?symbol=%s", q.Symbol)
+	reqURL := fmt.Sprintf("api/v1/aggTrades?symbol=%s", q.Symbol)
 
-	_, err = b.client.do("GET", reqUrl, "", false, &trades)
+	_, err = b.client.do("GET", reqURL, "", false, &trades)
 	return
 }
 
 // Kline/candlestick bars for a symbol. Klines are uniquely identified by their open time.
-func (b *Binance) GetKlines(q KlineQuery) (klines []Kline, err error) {
+func (b *Binance) GetKlines(q KlineQuery) ([]*Kline, error) {
+	var err error
+	out := []RESTKline{}
 
 	err = q.ValidateKlineQuery()
 	if err != nil {
-		return
+		return nil, err
 	}
 
-	reqUrl := fmt.Sprintf("api/v1/klines?symbol=%s&interval=%s&limit=%d", q.Symbol, q.Interval, q.Limit)
+	reqURL := fmt.Sprintf("api/v1/klines?symbol=%s&interval=%s&limit=%d", q.Symbol, q.Interval, q.Limit)
 
 	if q.StartTime != 0 {
-		reqUrl = reqUrl + fmt.Sprintf("&startTime=%d", q.StartTime)
+		reqURL = reqURL + fmt.Sprintf("&startTime=%d", q.StartTime)
 	}
 
 	if q.EndTime != 0 {
-		reqUrl = reqUrl + fmt.Sprintf("&endTime=%d", q.EndTime)
+		reqURL = reqURL + fmt.Sprintf("&endTime=%d", q.EndTime)
 	}
 
-	fmt.Println(reqUrl)
-
-	_, err = b.client.do("GET", reqUrl, "", false, &klines)
+	_, err = b.client.do("GET", reqURL, "", false, &out)
 	if err != nil {
-		return
+		return nil, err
 	}
 
-	return
+	klines := make([]*Kline, len(out))
+	for i := range out {
+		klines[i] = out[i].kline
+	}
+
+	return klines, nil
 }
 
 // 24 hour price change statistics.
@@ -74,8 +79,8 @@ func (b *Binance) Get24Hr(q SymbolQuery) (changeStats ChangeStats, err error) {
 		return
 	}
 
-	reqUrl := fmt.Sprintf("api/v1/ticker/24hr?symbol=%s", q.Symbol)
-	_, err = b.client.do("GET", reqUrl, "", false, &changeStats)
+	reqURL := fmt.Sprintf("api/v1/ticker/24hr?symbol=%s", q.Symbol)
+	_, err = b.client.do("GET", reqURL, "", false, &changeStats)
 
 	return
 }
@@ -83,8 +88,8 @@ func (b *Binance) Get24Hr(q SymbolQuery) (changeStats ChangeStats, err error) {
 // Latest price for all symbols.
 func (b *Binance) GetAllPrices() (prices []TickerPrice, err error) {
 
-	reqUrl := "api/v1/ticker/allPrices"
-	_, err = b.client.do("GET", reqUrl, "", false, &prices)
+	reqURL := "api/v1/ticker/allPrices"
+	_, err = b.client.do("GET", reqURL, "", false, &prices)
 
 	return
 }
@@ -115,8 +120,8 @@ func (b *Binance) GetLastPrice(q SymbolQuery) (price TickerPrice, err error) {
 // Best price/qty on the order book for all symbols.
 func (b *Binance) GetBookTickers() (booktickers []BookTicker, err error) {
 
-	reqUrl := "api/v1/ticker/allBookTickers"
-	_, err = b.client.do("GET", reqUrl, "", false, &booktickers)
+	reqURL := "api/v1/ticker/allBookTickers"
+	_, err = b.client.do("GET", reqURL, "", false, &booktickers)
 
 	return
 }

@@ -110,6 +110,80 @@ type Kline struct {
 	TakerQuoteVolume decimal.Decimal `json:"Q"`
 }
 
+type RESTKline struct {
+	kline *Kline
+}
+
+func (k *RESTKline) UnmarshalJSON(b []byte) error {
+
+	k.kline = &Kline{}
+
+	var s [11]interface{}
+	var err error
+
+	if err = json.Unmarshal(b, &s); err != nil {
+		return err
+	}
+
+	k.kline.OpenTime = int64(s[0].(float64))
+
+	o, err := decimal.NewFromString(s[1].(string))
+	if err != nil {
+		return err
+	}
+	k.kline.Open = o
+
+	h, err := decimal.NewFromString(s[2].(string))
+	if err != nil {
+		return err
+	}
+	k.kline.High = h
+
+	l, err := decimal.NewFromString(s[3].(string))
+	if err != nil {
+		return err
+	}
+	k.kline.Low = l
+
+	c, err := decimal.NewFromString(s[4].(string))
+	if err != nil {
+		return err
+	}
+	k.kline.Close = c
+
+	v, err := decimal.NewFromString(s[5].(string))
+	if err != nil {
+		return err
+	}
+	k.kline.Volume = v
+
+	k.kline.CloseTime = int64(s[6].(float64))
+
+	q, err := decimal.NewFromString(s[7].(string))
+	if err != nil {
+		return err
+	}
+	k.kline.QuoteVolume = q
+
+	k.kline.Trades = int64(s[8].(float64))
+
+	tb, err := decimal.NewFromString(s[9].(string))
+	if err != nil {
+		return err
+	}
+	k.kline.TakerBaseVolume = tb
+
+	tq, err := decimal.NewFromString(s[10].(string))
+	if err != nil {
+		return err
+	}
+	k.kline.TakerBaseVolume = tq
+
+	k.kline.Closed = true
+
+	return nil
+}
+
 // Result from: GET /api/v3/exchangeInfo
 
 type ExchangeInfo struct {

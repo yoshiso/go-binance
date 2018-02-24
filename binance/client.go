@@ -24,8 +24,8 @@ type Client struct {
 }
 
 type BadRequest struct {
-	code int64  `json:"code"`
-	msg  string `json:"msg,required"`
+	Code int64  `json:"code"`
+	Msg  string `json:"msg,required"`
 }
 
 func handleError(resp *http.Response) error {
