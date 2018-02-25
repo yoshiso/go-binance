@@ -177,7 +177,7 @@ func (k *RESTKline) UnmarshalJSON(b []byte) error {
 	if err != nil {
 		return err
 	}
-	k.kline.TakerBaseVolume = tq
+	k.kline.TakerQuoteVolume = tq
 
 	k.kline.Closed = true
 
